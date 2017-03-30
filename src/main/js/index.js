@@ -75,7 +75,7 @@ gulp.task('deploy:test:css', function() {
   return gulp.src(PLI.SRC_TEST_CSS)
     .pipe(pc(pre_uncss_processors))
     .pipe(uncss({
-      html: [PLI.TARGET_TEST_HTML]
+      html: [PLI.SRC_TEST_HTML]
     }))
     .pipe(pc(post_uncss_processors))
     .pipe(cleancss({
