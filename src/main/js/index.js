@@ -29,7 +29,7 @@
 //  that are used have @font-face declarations generated.
 //  Main and test css is sourced and the result of the task
 //  is output to the corresponding deploy directories.
--//  ---------------------------------------------------
+//  ---------------------------------------------------
 //  deploy:html
 //  ---------------------------------------------------
 //  This updates the css import of the corresponding test html
@@ -84,18 +84,9 @@ gulp.task('deploy:test:html', function() {
   return gulp
     .src(PLI.TARGET_TEST_HTML)
     .pipe(cheerio(function($, file) {
-      $('.Test_markup > code').each(function() {
-        var markup = $(this).html();
-        //Insert the Test-render block after the Test-then block
-        //Append the markup block to the Test-render block
-        $($(this).parent().parent().next().children('.Test_description')).after(renderTestBlock).next().append(markup);
-      });
+      $('link[href="../../../target/test/css/index.css"]').attr('href',
+        $('link[href="../../../target/test/css/index.css"]').attr('href').replace('target', 'deploy'));
     }))
-    /*
-      $('link[href="href="../../../target/test/css/index.css"]').a‌​ttr('href',
-
-    });*/
-
     .pipe(gulp.dest(PLI.deploy.test.html));
 });
 
