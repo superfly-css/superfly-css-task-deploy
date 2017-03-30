@@ -1,4 +1,3 @@
-
 //==================================================
 //  For the description see
 //  [SupeflyCSS Test Task](https://github.com/superfly-css/superfly-css-task-deploy/)
@@ -30,7 +29,7 @@
 //  that are used have @font-face declarations generated.
 //  Main and test css is sourced and the result of the task
 //  is output to the corresponding deploy directories.
-//  ---------------------------------------------------
+-//  ---------------------------------------------------
 //  deploy:html
 //  ---------------------------------------------------
 //  This updates the css import of the corresponding test html
@@ -47,6 +46,7 @@
 //==================================================
 
 var gulp = require('gulp');
+var cheerio = require('gulp-cheerio');
 var pc = require('gulp-postcss');
 var pc_import = require('postcss-import');
 var pc_calc = require('postcss-calc');
@@ -72,28 +72,30 @@ var post_uncss_processors = [pc_font_magician, autoprefixer, pc_reporter({
 
 gulp.task('deploy:test:css', function() {
   return gulp.src(PLI.SRC_TEST_CSS)
+    .pipe(pc(pre_uncss_processors))
     .pipe(uncss({
-      .pipe(pc(pre_uncss_processors))
       html: [PLI.TARGET_TEST_HTML]
     }))
     .pipe(pc(post_uncss_processors))
     .pipe(gulp.dest(PLI.deploy.test.css));
 });
 
-
-
-var PLI = require('superfly-css-pli');
-
-//---------------------------------
 gulp.task('deploy:test:html', function() {
   return gulp
     .src(PLI.TARGET_TEST_HTML)
     .pipe(cheerio(function($, file) {
-      $('link[href="href="../../../target/test/css/index.css"]').a‌​ttr('href',
-           $('link[href="href="../../../target/test/css/index.css"]').
-           a‌​ttr('href').replace(‌​'target', 'deploy'));
+      $('.Test_markup > code').each(function() {
+        var markup = $(this).html();
+        //Insert the Test-render block after the Test-then block
+        //Append the markup block to the Test-render block
+        $($(this).parent().parent().next().children('.Test_description')).after(renderTestBlock).next().append(markup);
       });
     }))
+    /*
+      $('link[href="href="../../../target/test/css/index.css"]').a‌​ttr('href',
+
+    });*/
+
     .pipe(gulp.dest(PLI.deploy.test.html));
 });
 
