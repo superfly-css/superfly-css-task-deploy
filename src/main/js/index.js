@@ -61,6 +61,7 @@ var pc_custom_media = require('postcss-custom-media');
 var pc_font_magician = require('postcss-font-magician');
 
 var uncss = require('gulp-uncss');
+var cleancss = require('gulp-clean-css');
 var autoprefixer = require('autoprefixer');
 
 var PLI = require('superfly-css-pli');
@@ -77,6 +78,9 @@ gulp.task('deploy:test:css', function() {
       html: [PLI.TARGET_TEST_HTML]
     }))
     .pipe(pc(post_uncss_processors))
+    .pipe(cleancss({
+      compatibility: 'ie8'
+    }))
     .pipe(gulp.dest(PLI.deploy.test.css));
 });
 
