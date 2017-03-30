@@ -71,6 +71,8 @@ var post_uncss_processors = [pc_font_magician, autoprefixer, pc_reporter({
   clearMessages: true
 })];
 
+var link_selector = 'link[href^="../../../target/"][href$=".css"]';
+
 gulp.task('deploy:main:css', function() {
   return gulp.src(PLI.SRC_MAIN_CSS)
     .pipe(pc(pre_uncss_processors))
@@ -102,8 +104,8 @@ gulp.task('deploy:main:html', function() {
   return gulp
     .src(PLI.TARGET_MAIN_HTML)
     .pipe(cheerio(function($, file) {
-      $('link[href="../../../target/test/css/index.css"]').attr('href',
-        $('link[href="../../../target/test/css/index.css"]').attr('href').replace('target', 'deploy'));
+      $(link_selector).attr('href',
+        $(link_selector).attr('href').replace('target', 'deploy'));
     }))
     .pipe(gulp.dest(PLI.deploy.main.html));
 });
@@ -112,8 +114,8 @@ gulp.task('deploy:test:html', function() {
   return gulp
     .src(PLI.TARGET_TEST_HTML)
     .pipe(cheerio(function($, file) {
-      $('link[href="../../../target/test/css/index.css"]').attr('href',
-        $('link[href="../../../target/test/css/index.css"]').attr('href').replace('target', 'deploy'));
+      $(link_selector).attr('href',
+        $(link_selector).attr('href').replace('target', 'deploy'));
     }))
     .pipe(gulp.dest(PLI.deploy.test.html));
 });
